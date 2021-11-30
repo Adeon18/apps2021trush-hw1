@@ -174,14 +174,4 @@ public class TemperatureSeriesAnalysis {
         }
         return 0;
     }
-
-    public static void main(String[] args) {
-        double[] temperatureSeries = {-1.0};
-        TemperatureSeriesAnalysis seriesAnalysis = new TemperatureSeriesAnalysis(temperatureSeries);
-        seriesAnalysis.addTemps(5.0, 777.777, 15.9, 9.9);
-        System.out.println(Arrays.toString(seriesAnalysis.getTemperatureSeries()));
-        System.out.println(seriesAnalysis.getTemperatureSeries().length);
-        System.out.println(seriesAnalysis.getActual_size());
-
-    }
 }
