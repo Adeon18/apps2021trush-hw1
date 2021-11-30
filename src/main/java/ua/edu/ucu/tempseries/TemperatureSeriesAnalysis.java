@@ -5,14 +5,13 @@ import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.List;
 
 public class TemperatureSeriesAnalysis {
 
     @Getter
     private double[] temperatureSeries;
-    private static final double MAX_POSSIBLE_TEMPERATURE = 1000;
-    private static final double MIN_POSSIBLE_TEMPERATURE = -273;
+    public static final double MAX_POSSIBLE_TEMPERATURE = 1000;
+    public static final double MIN_POSSIBLE_TEMPERATURE = -273;
     @Getter int actual_size;// The filled space
 
     public TemperatureSeriesAnalysis() {
@@ -40,8 +39,11 @@ public class TemperatureSeriesAnalysis {
 
     public double average() {
 
-        double sum = 0;
+        if (temperatureSeries.length == 0) {
+            throw new IllegalArgumentException();
+        }
 
+        double sum = 0;
         for (int i = 0; i < actual_size; i++) {
             sum += temperatureSeries[i];
         }
@@ -50,8 +52,12 @@ public class TemperatureSeriesAnalysis {
     }
 
     public double deviation() {
-        double average = average();
 
+        if (temperatureSeries.length == 0) {
+            throw new IllegalArgumentException();
+        }
+
+        double average = average();
         double squaredDiffSum = 0;
 
         for (int i = 0; i < actual_size; i++) {
@@ -100,21 +106,31 @@ public class TemperatureSeriesAnalysis {
     }
 
     public double[] findTempsLessThen(double tempValue) {
-        double[] tempsGreaterThan = new double[actual_size];
+
+        if (temperatureSeries.length == 0) {
+            throw new IllegalArgumentException();
+        }
+
+        double[] tempsLessThan = new double[actual_size];
         int idx = 0;
         for(int i = 0; i < actual_size; i++) {
             if (temperatureSeries[i] < tempValue) {
-                tempsGreaterThan[idx] = temperatureSeries[i];
+                tempsLessThan[idx] = temperatureSeries[i];
                 idx++;
             }
         }
         // At the end, the index will be the size of the array
-        tempsGreaterThan = Arrays.copyOf(tempsGreaterThan, idx);
+        tempsLessThan = Arrays.copyOf(tempsLessThan, idx);
 
-        return tempsGreaterThan;
+        return tempsLessThan;
     }
 
     public double[] findTempsGreaterThen(double tempValue) {
+
+        if (temperatureSeries.length == 0) {
+            throw new IllegalArgumentException();
+        }
+
         double[] tempsGreaterThan = new double[actual_size];
         int idx = 0;
         for(int i = 0; i < actual_size; i++) {
@@ -144,6 +160,10 @@ public class TemperatureSeriesAnalysis {
     }
 
     public int addTemps(double... temps) {
+
+        if (!areTempsRight(temps)) {
+            throw new InputMismatchException();
+        }
 
         for (double temp : temps) {
             if (temperatureSeries.length == actual_size) {
