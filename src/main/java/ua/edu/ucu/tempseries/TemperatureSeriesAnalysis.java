@@ -10,9 +10,9 @@ public class TemperatureSeriesAnalysis {
 
     @Getter
     private double[] temperatureSeries;
+    private int actualSize = 0;// The filled space
     public static final double MAX_POSSIBLE_TEMPERATURE = 1000;
     public static final double MIN_POSSIBLE_TEMPERATURE = -273;
-    @Getter int actual_size;// The filled space
 
     public TemperatureSeriesAnalysis() {
 
@@ -25,7 +25,7 @@ public class TemperatureSeriesAnalysis {
         }
 
         this.temperatureSeries = Arrays.copyOf(temperatureSeries, temperatureSeries.length);
-        actual_size = temperatureSeries.length;
+        actualSize = temperatureSeries.length;
     }
 
     public boolean areTempsRight(double[] temps) {
@@ -44,7 +44,7 @@ public class TemperatureSeriesAnalysis {
         }
 
         double sum = 0;
-        for (int i = 0; i < actual_size; i++) {
+        for (int i = 0; i < actualSize; i++) {
             sum += temperatureSeries[i];
         }
 
@@ -60,7 +60,7 @@ public class TemperatureSeriesAnalysis {
         double average = average();
         double squaredDiffSum = 0;
 
-        for (int i = 0; i < actual_size; i++) {
+        for (int i = 0; i < actualSize; i++) {
             squaredDiffSum += Math.pow(Math.abs(average - temperatureSeries[i]), 2);
         }
 
@@ -89,7 +89,7 @@ public class TemperatureSeriesAnalysis {
         double biggestDiff = Double.POSITIVE_INFINITY;
         double closestElement = temperatureSeries[0];
 
-        for (int i = 0; i < actual_size; i++) {
+        for (int i = 0; i < actualSize; i++) {
             double diff = tempValue - temperatureSeries[i];
             if (Math.abs(diff) < Math.abs(biggestDiff)) {
                 biggestDiff = diff;
@@ -111,9 +111,9 @@ public class TemperatureSeriesAnalysis {
             throw new IllegalArgumentException();
         }
 
-        double[] tempsLessThan = new double[actual_size];
+        double[] tempsLessThan = new double[actualSize];
         int idx = 0;
-        for(int i = 0; i < actual_size; i++) {
+        for(int i = 0; i < actualSize; i++) {
             if (temperatureSeries[i] < tempValue) {
                 tempsLessThan[idx] = temperatureSeries[i];
                 idx++;
@@ -131,9 +131,9 @@ public class TemperatureSeriesAnalysis {
             throw new IllegalArgumentException();
         }
 
-        double[] tempsGreaterThan = new double[actual_size];
+        double[] tempsGreaterThan = new double[actualSize];
         int idx = 0;
-        for(int i = 0; i < actual_size; i++) {
+        for(int i = 0; i < actualSize; i++) {
             if (temperatureSeries[i] > tempValue) {
                 tempsGreaterThan[idx] = temperatureSeries[i];
                 idx++;
@@ -166,11 +166,11 @@ public class TemperatureSeriesAnalysis {
         }
 
         for (double temp : temps) {
-            if (temperatureSeries.length == actual_size) {
+            if (temperatureSeries.length == actualSize) {
                 temperatureSeries = Arrays.copyOf(temperatureSeries, temperatureSeries.length * 2);
             }
-            temperatureSeries[actual_size] = temp;
-            actual_size++;
+            temperatureSeries[actualSize] = temp;
+            actualSize++;
         }
         return 0;
     }
